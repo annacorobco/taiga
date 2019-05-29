@@ -4,7 +4,7 @@ MAINTAINER Optimum "info@optimum-web.com"
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update  && apt-get autoremove -y && apt-get -y --no-install-recommends install locales supervisor curl \
- vim gcc libpq5 git lsof net-tools libpq-dev uwsgi uwsgi-src uuid-dev libcap-dev
+ vim gcc libpq5 git lsof net-tools libpq-dev uwsgi uwsgi-src uuid-dev libcap-dev gettext
 
 RUN locale-gen en_US.UTF-8 && dpkg-reconfigure locales
 
