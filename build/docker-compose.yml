@@ -1,0 +1,34 @@
+version: "2"
+
+volumes:
+   db:
+       driver: local
+
+services:
+
+  taigaback:
+
+      build:
+        context: ./backend
+        dockerfile: Dockerfile
+
+      image: optimum/taiga-back
+      container_name: taigaback
+      ports:
+          - "8005:8000"
+      environment:
+          - "API_NAME=taigaback"
+      entrypoint: "./regenerate.sh"
+
+
+  taigafront:
+      build:
+          context: ./frontend
+          dockerfile: Dockerfile
+      image: optimum/taiga-front
+      container_name: taigafront
+      ports:
+          - "80:80"
+          - "443:443"
+      environment:
+          - "API_NAME=taigaback"
