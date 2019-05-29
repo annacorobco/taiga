@@ -6,6 +6,7 @@ volumes:
 
 services:
   taigaback:
+      build: backend
       image: trydirect/taiga:back-3.4
       container_name: taigaback
       ports:
@@ -15,6 +16,7 @@ services:
       entrypoint: "./regenerate.sh"
 
   taigafront:
+      build: frontend
       image: trydirect/taiga:front-3.4
       container_name: taigafront
       ports:
