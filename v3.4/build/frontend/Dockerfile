@@ -1,4 +1,4 @@
-FROM nginx
+FROM nginx:latest
 
 RUN apt-get update && apt-get install --no-install-recommends -y git && apt-get clean \
  && apt-get autoclean && apt-get autoremove -y -qq
@@ -6,9 +6,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y git && apt-get 
 RUN rm -rf /app
 WORKDIR /app
 
+RUN git config --global http.sslVerify false
 RUN git clone https://github.com/taigaio/taiga-front-dist .
-#RUN git checkout stable
-RUN git checkout tags/3.4.5 -b "3.4.5"
+RUN git checkout stable
+RUN git checkout tags/3.4.5-stable -b "3.4.5-stable"
 RUN mv ./dist/* ./
 RUN rm -rf dist
 
