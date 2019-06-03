@@ -15,8 +15,10 @@ install:
 before_script:
 - pip install requests
 - pip install docker
+- cd $TRAVIS_BUILD_DIR
 script:
 - bash ./.travis/linters.sh
+- bash v3.4/scripts/setup.sh
 - python tests.py
 notifications:
   slack:
