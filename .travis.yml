@@ -1,0 +1,45 @@
+language: python
+python:
+- 2.7
+services:
+- docker
+before_install:
+- sudo apt-get update
+- docker-compose --version
+- pip install docker-compose --upgrade
+- docker-compose --version
+install:
+- cd v3.4/build
+- docker-compose -f docker-compose-build.yml up -d --build
+- docker-compose -f docker-compose-build.yml ps
+before_script:
+- pip install requests
+- pip install docker
+- cd $TRAVIS_BUILD_DIR
+script:
+- bash ./.travis/linters.sh
+- cd v3.4/build
+- bash scripts/setup.sh
+- cd $TRAVIS_BUILD_DIR
+- python tests.py
+notifications:
+  slack:
+    rooms:
+    - optimum-team:GycletOWK4Kt95GktwYwfUMp#build
+  webhooks:
+    urls:
+    - https://webhooks.gitter.im/e/0aa6221439383fa972ab
+    on_success: change
+    on_failure: always
+    on_start: never
+after_success:
+- echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+- docker-compose -f docker-compose-build.yml images
+- docker push trydirect/taiga:back-3.4
+- docker push trydirect/taiga:front-3.4
+env:
+  matrix:
+  - DOCKER_CONTENT_TRUST=1
+  global:
+  - secure: xuuby76iWOQRfmIdXR6PLJ76+j9Xi9fh7yKW0VxMIfap5QKyEKKx9QdK9ldl/H0ZM0JbTpJbcuABuC/1K9duKLqGk5eERl/hpA5dk2imMWDvqZm30pyze5yZZCqiPPK+2TaA9Ha9puAbid8VPGAX0SIfVWrF4iuNJZsuv8AQ+3qS7FJv/h+DKKdGz5ZmVsVBRnbgkl+YefEMNLVbLnXFdBjivAJ6ESg8Sitvt5LVX1Juwn+Z3u/7HAYVaQJlXAELB8fM5AknYx49WXWEO+xxuCvG0BilLyGCorN+IPrpKvtjFHBF7ITT7jxHwl2D1aja142il6/HjKcvOCVd2R22cGBNVXxFho/dyw8ZcGrb8FlGDfF0ET9/JlQnxT/mTulpaEFPwGnIfrPp16G1wK/38v3Muil6hJFfXcBKCol0uZJLgY5lSlqwDYzDfgalklk9Vp0GEJ3JpPlhHbauGWYed4RyA/239taubfzPT43WC2UzyDCH8MzHxhaW1yYY188ItTND0ZJox6RIe7mk10HRMmLariD3bzkZu7pNBsPe9hOKk+2/YZCi9PLDAw7WUQ5MREFSlWJfVYQpmz4gZtNAGo7zyVpisDYVxrC/in3Wd9KJWhk/Wdn0wwOeDUY5rqKbiGsPsS8zw5IhXydfnQimDwGFh5DzQZKUay8Fdr5NBIE=
+  - secure: BrDDFF4ntko72Rq3mlqDTGDkelkLblfy5yUBJTpUWUM0sxgzUzCIt1PFGe1w55Pg41iVgTZbEJqLMUNUKywgnC9BnIWHUSplm/PDwtjTI6o2jsMNnfsqhTVjSnQjr3aR329EqbWlXzzx6d8EsGL86xm/eEjVdG6yMtN7Tf0HvEu3U7fJo9/y6d8BXq2knTD4kUuOG+vHsJPpV2/WAQEPlQfN5xLv1+00V0325dQ8+ISQY7xRoTuI133nTmNqy6DbEf2mv924PYwfx8AtBE1eePEKjEaPEfSJf/19Ys/XBID13QqhNjxmlj3YhsFOBm6MuYVtejEcAlWQda7d+njU4iB/JweiEG9MxwTdv40bcPAeLu6Z8H2X1sJyG7CdJlgaVUE2BYVDcdp6GAxQhiE8tygrHy5OldQs7APJ81VP5om/KS6xVV/JVT5r/GdxrmYCXJyZk8xFh4Op73GUZmcfQX21Lg4TOW3Mj9UPhqvSB2E//6R0kXB8SlY8Vts6fdO5TOQPuDrp4AmrMGH2t+OuJrGDeivY/zyahQftMIGUJ+r1rYbCIVvqunmQrst3BrBwzq24ESzrIY86tqWV/JS8W5T5l64bVStUvD5A8tLXX0BIz1zo/3nhqt2CrI+LD12Kzd8LB9P0/jutRaYwY7pdhv/DMcPJLLqQuzy4mOutCHc=
