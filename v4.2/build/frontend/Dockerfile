@@ -9,7 +9,7 @@ WORKDIR /app
 RUN git config --global http.sslVerify false
 RUN git clone https://github.com/taigaio/taiga-front-dist .
 RUN git checkout stable
-RUN git checkout tags/4.2.12 -b "4.2.12"
+# RUN git checkout tags/4.2.12 -b "4.2.12"
 RUN mv ./dist/* ./
 RUN rm -rf dist
 

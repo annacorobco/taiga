@@ -24,8 +24,8 @@ WORKDIR /app
 
 RUN git config --global http.sslVerify false
 RUN git clone https://github.com/taigaio/taiga-back.git .
-#RUN git checkout stable
-RUN git checkout tags/4.2.12 -b "4.2.12"
+RUN git checkout stable
+# RUN git checkout tags/4.2.12 -b "4.2.12"
 
 COPY wsgi.ini /etc/taiga-wsgi.ini
 COPY taiga.conf /etc/supervisor/conf.d/taiga.conf
