@@ -28,6 +28,12 @@ docker-compose exec --user=taiga taigaback scripts/setup.sh
 ```
 
 
+## Quick deployment to cloud
+##### Amazon AWS, Digital Ocean, Hetzner and others
+[<img src="https://img.shields.io/badge/quick%20deploy-%40try.direct-brightgreen.svg">](https://try.direct/server/user/deploy/InRhaWdhfDZ8MjUi.EAoFeA.VyIeETvchuZZNNqIg1UUNGytFZo/)
+
+
+
 ## Contributing
 
 1. Fork it (https://github.com/trydirect/taiga/fork)
